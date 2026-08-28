@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --color-paper: #fbf7f1;
+  --color-paper-dim: #f3ecdf;
+  --color-ink: #241c15;
+  --color-ink-soft: #5b5148;
+
+  --color-brand-50: #fff1ec;
+  --color-brand-100: #ffe0d3;
+  --color-brand-200: #ffc2a8;
+  --color-brand-300: #ff9d72;
+  --color-brand-400: #fb7a4c;
+  --color-brand-500: #ef5a2e;
+  --color-brand-600: #d8431d;
+  --color-brand-700: #b23217;
+  --color-brand-800: #8c2916;
+  --color-brand-900: #712416;
+
+  --color-accent-500: #7c5cff;
+  --color-accent-600: #6a45f0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* Android status bar / gesture-bar safe areas when wrapped in Capacitor */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-ink) 20%, transparent);
+  border-radius: 999px;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise-in {
+  animation: rise-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
