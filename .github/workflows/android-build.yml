@@ -33,10 +33,28 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Bump Gradle wrapper version
+        run: |
+          sed -i -E 's/(gradle-)[0-9.]+(-[a-z]+\.zip)/\18.11.1\2/' android/gradle/wrapper/gradle-wrapper.properties
+
       - name: Bump Android Gradle Plugin version
         run: |
-          sed -i "s/classpath 'com.android.tools.build:gradle:[0-9.]*'/classpath 'com.android.tools.build:gradle:8.9.1'/" android/build.gradle
-          sed -i -E 's/(gradle-)[0-9.]+(-[a-z]+\.zip)/\18.11.1\2/' android/gradle/wrapper/gradle-wrapper.properties
+          sed -i "s/classpath 'com.android.tools.build:gradle:[0-9.]*'/classpath 'com.android.tools.build:gradle:8.9.1'/" android/build.gradle || true
+          sed -i -E "s/(id ['\"]com\.android\.application['\"] version )['\"][0-9.]+['\"]/\1'8.9.1'/" android/build.gradle || true
+          echo "----- android/build.gradle after patch -----"
+          cat android/build.gradle
+
+      - name: Bump compileSdk / targetSdk
+        run: |
+          sed -i -E "s/(compileSdkVersion\s*=\s*)[0-9]+/\136/" android/variables.gradle || true
+          sed -i -E "s/(targetSdkVersion\s*=\s*)[0-9]+/\136/" android/variables.gradle || true
+          echo "----- android/variables.gradle after patch -----"
+          cat android/variables.gradle
+
+      - name: Install Android SDK platform 36
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
       - name: Patch Android native project
         run: node scripts/patch-android.mjs
