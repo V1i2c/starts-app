@@ -33,6 +33,11 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Bump Android Gradle Plugin version
+        run: |
+          sed -i "s/classpath 'com.android.tools.build:gradle:[0-9.]*'/classpath 'com.android.tools.build:gradle:8.9.1'/" android/build.gradle
+          sed -i -E 's/(gradle-)[0-9.]+(-[a-z]+\.zip)/\18.11.1\2/' android/gradle/wrapper/gradle-wrapper.properties
+
       - name: Patch Android native project
         run: node scripts/patch-android.mjs
 
